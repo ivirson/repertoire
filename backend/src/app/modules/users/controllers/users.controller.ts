@@ -2,9 +2,9 @@ import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import { Error } from "sequelize";
 import { AppError } from "../../../shared/models/error.model";
-import UsersDAO from "../repositories/users.repository";
+import UsersRepository from "../repositories/users.repository";
 
-const usersDAO = new UsersDAO();
+const usersRepository = new UsersRepository();
 
 export default class UsersController {
   public async findAll(
@@ -12,7 +12,7 @@ export default class UsersController {
     response: Response
   ): Promise<Response> {
     try {
-      const users = await usersDAO.findAll();
+      const users = await usersRepository.findAll();
       return response.status(200).json(users);
     } catch (error: Error | any) {
       return response
@@ -32,7 +32,7 @@ export default class UsersController {
   ): Promise<Response> {
     const { id } = request.params;
     try {
-      const user = await usersDAO.findById(id);
+      const user = await usersRepository.findById(id);
 
       if (user) {
         return response.status(200).json(user);
@@ -58,7 +58,7 @@ export default class UsersController {
     const { email } = request.body;
 
     try {
-      const user = await usersDAO.findByEmail(email);
+      const user = await usersRepository.findByEmail(email);
 
       if (user) {
         return response.status(200).json(user);
@@ -83,7 +83,7 @@ export default class UsersController {
     try {
       const salt = await bcrypt.genSalt(10);
       const encryptedPassword = await bcrypt.hash(user.password, salt);
-      const createdUser = await usersDAO.save({
+      const createdUser = await usersRepository.save({
         ...user,
         password: encryptedPassword,
       });
@@ -105,7 +105,7 @@ export default class UsersController {
     const user = request.body;
 
     try {
-      const updatedUser = await usersDAO.update(id, user);
+      const updatedUser = await usersRepository.update(id, user);
       return response.status(200).json(updatedUser);
     } catch (error: Error | any) {
       return response
@@ -123,7 +123,7 @@ export default class UsersController {
     const { id } = request.params;
 
     try {
-      await usersDAO.delete(id);
+      await usersRepository.delete(id);
       return response.status(200).json();
     } catch (error: Error | any) {
       return response

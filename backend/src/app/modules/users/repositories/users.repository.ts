@@ -1,6 +1,6 @@
 import User from "../models/user.model";
 
-export default class UsersDAO {
+export default class UsersRepository {
   public async findAll(): Promise<User[]> {
     return await User.findAll();
   }
