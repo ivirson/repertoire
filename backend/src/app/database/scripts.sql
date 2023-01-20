@@ -1,2 +1,6 @@
 -- SQLite
-select * from users
+SELECT * FROM users;
+DELETE FROM users;
+SELECT * FROM users;
+
+

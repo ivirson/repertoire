@@ -1,5 +1,5 @@
-import database from "./../../../database/db";
 import Sequelize, { Model } from "sequelize";
+import database from "./../../../database/db";
 
 export default class User extends Model {}
 
@@ -28,13 +28,33 @@ User.init(
   {
     sequelize: database,
     modelName: "User",
+    defaultScope: {
+      attributes: { exclude: ["password", "createdAt", "updatedAt"] },
+    },
+    scopes: {
+      withPassword: {
+        attributes: { exclude: [] },
+      },
+    },
+    hooks: {
+      afterCreate: (record) => {
+        delete record.dataValues.password;
+        delete record.dataValues.createdAt;
+        delete record.dataValues.updatedAt;
+      },
+      afterUpdate: (record) => {
+        delete record.dataValues.password;
+        delete record.dataValues.createdAt;
+        delete record.dataValues.updatedAt;
+      },
+    },
   }
 );
 
-User.prototype.toJSON = function () {
-  var values = Object.assign({}, this.get());
-  delete values.password;
-  delete values.createdAt;
-  delete values.updatedAt;
-  return values;
-};
+// User.prototype.toJSON = function () {
+//   var values = Object.assign({}, this.get());
+//   delete values.password;
+//   delete values.createdAt;
+//   delete values.updatedAt;
+//   return values;
+// };

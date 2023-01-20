@@ -1,14 +1,18 @@
-import * as dotenv from 'dotenv';
-import express from 'express';
-import router from './router';
+import * as dotenv from "dotenv";
 
 dotenv.config();
+
+import express from "express";
+import database from "./database/db";
+import router from "./router";
 
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(express.json())
+app.use(express.json());
 
-app.use(router)
+database.sync();
 
-app.listen(PORT, () => 'Server running on port 5000');
+app.use(router);
+
+app.listen(PORT, () => `Server running on port ${PORT}`);

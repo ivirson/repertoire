@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import { Error } from "sequelize";
 import { AppError } from "../../../shared/models/error.model";
@@ -51,42 +50,11 @@ export default class UsersController {
     }
   }
 
-  public async findByEmail(
-    request: Request,
-    response: Response
-  ): Promise<Response> {
-    const { email } = request.body;
-
-    try {
-      const user = await usersRepository.findByEmail(email);
-
-      if (user) {
-        return response.status(200).json(user);
-      }
-
-      return response.status(404).json(new AppError("User not found."));
-    } catch (error: Error | any) {
-      return response
-        .status(500)
-        .json(
-          new AppError(
-            "There was an error querying the data.",
-            error.errors.map((e: Error) => e.message) || error
-          )
-        );
-    }
-  }
-
   public async save(request: Request, response: Response): Promise<Response> {
     const user = request.body;
 
     try {
-      const salt = await bcrypt.genSalt(10);
-      const encryptedPassword = await bcrypt.hash(user.password, salt);
-      const createdUser = await usersRepository.save({
-        ...user,
-        password: encryptedPassword,
-      });
+      const createdUser = await usersRepository.save(user);
       return response.status(201).json(createdUser);
     } catch (error: Error | any) {
       return response

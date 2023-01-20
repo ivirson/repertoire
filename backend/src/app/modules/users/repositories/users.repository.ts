@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import User from "../models/user.model";
 
 export default class UsersRepository {
@@ -9,16 +10,13 @@ export default class UsersRepository {
     return await User.findByPk(id);
   }
 
-  public async findByEmail(email: string): Promise<User | null> {
-    return await User.findOne({
-      where: {
-        email,
-      },
-    });
-  }
-
   public async save(user: any): Promise<User> {
-    return await User.create(user);
+    const salt = await bcrypt.genSalt(10);
+    const encryptedPassword = await bcrypt.hash(user.password, salt);
+    return await User.create({
+      ...user,
+      password: encryptedPassword,
+    });
   }
 
   public async update(id: string, user: any): Promise<User | null> {
