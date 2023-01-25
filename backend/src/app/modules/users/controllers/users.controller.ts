@@ -6,6 +6,24 @@ import UsersRepository from "../repositories/users.repository";
 const usersRepository = new UsersRepository();
 
 export default class UsersController {
+  /**
+   * @swagger
+   * /users:
+   *  get:
+   *    tags:
+   *      - Users
+   *    summary: Get users
+   *    description: Get all users
+   *    responses:
+   *      200:
+   *        description: Returns all users
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: array
+   *              items:
+   *                $ref: '#/components/schemas/User'
+   */
   public async findAll(
     request: Request,
     response: Response
@@ -24,7 +42,24 @@ export default class UsersController {
         );
     }
   }
-
+  /**
+   * @swagger
+   * /users/{:id}:
+   *  get:
+   *    tags:
+   *      - Users
+   *    summary: Get user by id
+   *    description: Get user by id
+   *    responses:
+   *      200:
+   *        description: Returns a user
+   *        content:
+   *          application/json:
+   *            schema:
+   *              $ref: '#/components/schemas/User'
+   *      404:
+   *        description: User not found
+   */
   public async findById(
     request: Request,
     response: Response
@@ -33,11 +68,11 @@ export default class UsersController {
     try {
       const user = await usersRepository.findById(id);
 
-      if (user) {
-        return response.status(200).json(user);
+      if (!user) {
+        return response.status(404).json(new AppError("User not found."));
       }
 
-      return response.status(404).json(new AppError("User not found."));
+      return response.status(200).json(user);
     } catch (error: Error | any) {
       return response
         .status(500)
@@ -50,6 +85,27 @@ export default class UsersController {
     }
   }
 
+  /**
+   * @swagger
+   * /users:
+   *   post:
+   *     tags:
+   *       - Users
+   *     summary: Save user
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/NewUser'
+   *     responses:
+   *       201:
+   *         description: Created
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/User'
+   */
   public async save(request: Request, response: Response): Promise<Response> {
     const user = request.body;
 

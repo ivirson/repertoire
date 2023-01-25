@@ -1,5 +1,6 @@
 import * as dotenv from "dotenv";
 import express from "express";
+import path from "path";
 import swaggerJSDoc, { Options, SwaggerDefinition } from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import database from "./database/db";
@@ -16,6 +17,7 @@ database.sync();
 app.use(router);
 
 const swaggerDefinition: SwaggerDefinition = {
+  openapi: "3.0.0",
   info: {
     title: "Repertoire",
     version: "1.0.00",
@@ -28,7 +30,7 @@ const swaggerDefinition: SwaggerDefinition = {
 
 const options: Options = {
   swaggerDefinition,
-  apis: ["./modules/**/routes/*.routes.ts"],
+  apis: [path.join(__dirname, "./modules/**/controllers/*.ts")],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
