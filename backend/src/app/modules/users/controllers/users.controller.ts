@@ -13,7 +13,6 @@ export default class UsersController {
    *    tags:
    *      - Users
    *    summary: Get users
-   *    description: Get all users
    *    responses:
    *      200:
    *        description: Returns all users
@@ -42,6 +41,7 @@ export default class UsersController {
         );
     }
   }
+
   /**
    * @swagger
    * /users/{:id}:
@@ -49,7 +49,13 @@ export default class UsersController {
    *    tags:
    *      - Users
    *    summary: Get user by id
-   *    description: Get user by id
+   *    parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         description: Numeric ID of the user to retrieve.
+   *         schema:
+   *           type: integer
    *    responses:
    *      200:
    *        description: Returns a user
@@ -124,6 +130,34 @@ export default class UsersController {
     }
   }
 
+  /**
+   * @swagger
+   * /users/{:id}:
+   *   put:
+   *     tags:
+   *       - Users
+   *     summary: Update user
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         description: Numeric ID of the user to update.
+   *         schema:
+   *           type: integer
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/User'
+   *     responses:
+   *       200:
+   *         description: Updated
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/User'
+   */
   public async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
     const user = request.body;
@@ -143,6 +177,24 @@ export default class UsersController {
     }
   }
 
+  /**
+   * @swagger
+   * /users/{:id}:
+   *   delete:
+   *     tags:
+   *       - Users
+   *     summary: Delete user
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         description: Numeric ID of the user to delete.
+   *         schema:
+   *           type: integer
+   *     responses:
+   *       200:
+   *         description: Deleted
+   */
   public async delete(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
