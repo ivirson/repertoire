@@ -26,5 +26,35 @@
         "type": "string"
       }
     }
+  },
+  "UserLogin": {
+    "type": "object",
+    "properties": {
+      "email": {
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      }
+    }
+  },
+  "UserToken": {
+    "type": "object",
+    "properties": {
+      "user": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "token": {
+        "type": "string"
+      }
+    }
   }
 }

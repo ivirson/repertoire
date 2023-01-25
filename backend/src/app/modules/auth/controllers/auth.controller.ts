@@ -10,6 +10,31 @@ const authRepository = new AuthRepository();
 const usersRepository = new UsersRepository();
 
 export default class AuthController {
+  /**
+   * @swagger
+   * /auth/login:
+   *   post:
+   *     tags:
+   *       - Auth
+   *     summary: Login user
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/UserLogin'
+   *     responses:
+   *       200:
+   *         description: Logged in
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/UserToken'
+   *       404:
+   *         description: User not found
+   *       401:
+   *         description: Incorrect password
+   */
   public async login(request: Request, response: Response): Promise<Response> {
     const { email, password } = request.body;
 
@@ -52,6 +77,27 @@ export default class AuthController {
     }
   }
 
+  /**
+   * @swagger
+   * /auth/register:
+   *   post:
+   *     tags:
+   *       - Auth
+   *     summary: Register user
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/NewUser'
+   *     responses:
+   *       201:
+   *         description: Created
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/User'
+   */
   public async register(
     request: Request,
     response: Response
