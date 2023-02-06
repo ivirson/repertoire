@@ -19,9 +19,9 @@ app.use(router);
 const swaggerDefinition: SwaggerDefinition = {
   openapi: "3.0.0",
   info: {
-    title: "Repertoire",
+    title: "Api",
     version: "1.0.00",
-    description: "API Documentation for Repertoire project",
+    description: "Documentation for Api project",
   },
   components: {
     schemas: require("./schemas.json"),

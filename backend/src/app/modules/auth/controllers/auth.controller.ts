@@ -1,13 +1,10 @@
-import bcrypt from "bcrypt";
 import { Request, Response } from "express";
-import * as jwt from "jsonwebtoken";
-import { Error } from "sequelize";
 import { AppError } from "../../../shared/models/error.model";
-import UsersRepository from "../../users/repositories/users.repository";
-import AuthRepository from "../repositories/auth.repository";
+import UsersService from "../../users/services/users.service";
+import AuthService from "../services/auth.service";
 
-const authRepository = new AuthRepository();
-const usersRepository = new UsersRepository();
+const authService = new AuthService();
+const usersService = new UsersService();
 
 export default class AuthController {
   /**
@@ -36,44 +33,12 @@ export default class AuthController {
    *         description: Incorrect password
    */
   public async login(request: Request, response: Response): Promise<Response> {
-    const { email, password } = request.body;
-
     try {
-      const user = await authRepository.findByEmail(email);
-
-      if (!user) {
-        return response.status(404).json(new AppError("User not found."));
-      }
-
-      if (!(await bcrypt.compare(password, user.dataValues.password))) {
-        return response.status(401).json(new AppError("Incorrect password."));
-      }
-
-      const token = jwt.sign(
-        {
-          userId: user.dataValues.id,
-          email,
-        },
-        process.env.TOKEN_KEY!
-      );
-
-      return response.status(200).json({
-        user: {
-          id: user.dataValues.id,
-          name: user.dataValues.name,
-          email: user.dataValues.email,
-        },
-        token,
-      });
-    } catch (error: Error | any) {
-      return response
-        .status(500)
-        .json(
-          new AppError(
-            "There was an error querying the data.",
-            error.errors.map((e: Error) => e.message) || error
-          )
-        );
+      const { email, password } = request.body;
+      const credentials = await authService.login(email, password);
+      return response.status(200).json(credentials);
+    } catch (error: AppError | any) {
+      return response.status(error.statusCode || 500).json(error);
     }
   }
 
@@ -102,20 +67,83 @@ export default class AuthController {
     request: Request,
     response: Response
   ): Promise<Response> {
-    const user = request.body;
-
     try {
-      const createdUser = await usersRepository.save(user);
+      const user = request.body;
+      const createdUser = await usersService.save(user);
       return response.status(201).json(createdUser);
-    } catch (error: Error | any) {
-      return response
-        .status(500)
-        .json(
-          new AppError(
-            "There was an error saving the data.",
-            error.errors.map((e: Error) => e.message) || error
-          )
-        );
+    } catch (error: AppError | any) {
+      return response.status(error.statusCode || 500).json(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /auth/forgot-password:
+   *   post:
+   *     tags:
+   *       - Auth
+   *     summary: Forgot password
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/ForgotPassword'
+   *     responses:
+   *       200:
+   *         description: Recovery link was sent
+   *       404:
+   *         description: User not found
+   */
+  public async forgotPassword(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
+    try {
+      const { email } = request.body;
+      const user = await usersService.findByEmail(email);
+      const userToken = await authService.createUserToken(user!.id);
+      const link = `${process.env.API_ROOT}/reset-password?token=${userToken?.token}`;
+
+      await authService.sendMail(user!, link);
+
+      return response.status(200).json();
+    } catch (error: AppError | any) {
+      return response.status(error.statusCode || 500).json(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /auth/reset-password:
+   *   post:
+   *     tags:
+   *       - Auth
+   *     summary: Reset password
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/ResetPassword'
+   *     responses:
+   *       200:
+   *         description: Password updated
+   *       404:
+   *         description: User or User Token not found
+   *       401:
+   *         description: Token expired
+   */
+  public async resetPassword(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
+    try {
+      const { password, token } = request.body;
+      await authService.resetPassword(token, password);
+      return response.status(200).json();
+    } catch (error: AppError | any) {
+      return error || response.status(error.statusCode || 500).json(error);
     }
   }
 }
