@@ -2,12 +2,12 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { addHours, isAfter } from "date-fns";
 import nodemailer, { SentMessageInfo } from "nodemailer";
-import { AppError } from "../../../shared/models/error.model";
+import { AppError } from "../../../../shared/models/error.model";
 import UserToken from "../../users/models/user-token.model";
 import User from "../../users/models/user.model";
 import UsersRepository from "../../users/repositories/users.repository";
 import AuthRepository from "../repositories/auth.repository";
-import LogService from "../../../shared/log/services/log.service";
+import LogService from "../../../../shared/log/services/log.service";
 
 const authRepository = new AuthRepository();
 const usersRepository = new UsersRepository();

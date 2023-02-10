@@ -86,5 +86,79 @@
         "type": "file"
       }
     }
+  },
+  "Song": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "artist": {
+        "type": "string"
+      },
+      "tone": {
+        "type": "string"
+      },
+      "lyricsLink": {
+        "type": "string"
+      },
+      "chordsLink": {
+        "type": "string"
+      },
+      "createdAt": {
+        "type": "string"
+      },
+      "updatedAt": {
+        "type": "string"
+      }
+    }
+  },
+  "NewSong": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "artist": {
+        "type": "string"
+      },
+      "tone": {
+        "type": "string"
+      },
+      "lyricsLink": {
+        "type": "string"
+      },
+      "chordsLink": {
+        "type": "string"
+      }
+    }
+  },
+  "Schedule": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "date": {
+        "type": "string"
+      },
+      "songs": {
+        "type": "array"
+      }
+    }
+  },
+  "NewSchedule": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "type": "string"
+      },
+      "songs": {
+        "type": "array"
+      }
+    }
   }
 }

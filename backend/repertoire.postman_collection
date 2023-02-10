@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6f0504ca-eda5-48c0-9cc6-fc94b705b4b7",
+		"_postman_id": "d06bfa56-f701-4488-bc1d-8463b587f669",
 		"name": "Repertoire",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25426530"
@@ -16,7 +16,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjNjc5NDQ3Yi1jZjVjLTRiMmQtYjQ1OC1lMWY3MmJlZTRlYWUiLCJlbWFpbCI6Iml2aS5kYWx0cm9AZ21haWwuY29tIiwiaWF0IjoxNjc0NDg1OTYwfQ.RIPRdFoQxn8xFKKM3NBpxO2XU3qvHh5iQcP3NeCq_Ww",
+								"value": "{{TOKEN}}",
 								"type": "text"
 							}
 						],
@@ -37,16 +37,22 @@
 					"name": "GET USER BY ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "localhost:5000/users/0baf5ac1-0d72-4ff7-9e5b-8eb48ffffa49",
+							"raw": "localhost:5000/users/f7cddfb1-d55e-45bc-bde0-14041142301",
 							"host": [
 								"localhost"
 							],
 							"port": "5000",
 							"path": [
 								"users",
-								"0baf5ac1-0d72-4ff7-9e5b-8eb48ffffa49"
+								"f7cddfb1-d55e-45bc-bde0-14041142301"
 							]
 						}
 					},
@@ -55,11 +61,14 @@
 				{
 					"name": "POST USER",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Tarcísio Daltro\",\r\n    \"email\": \"t.daltro@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Ivirson Daltro\",\r\n    \"email\": \"ivi.daltro@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -108,6 +117,43 @@
 					"response": []
 				},
 				{
+					"name": "PUT USER AVATAR",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"description": "avatar",
+									"type": "file",
+									"src": "/C:/Users/019520631/Pictures/IVIRSON_FOTO_3x4.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/users/f7cddfb1-d55e-45bc-bde0-14041142301c/avatar",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"users",
+								"f7cddfb1-d55e-45bc-bde0-14041142301c",
+								"avatar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "DELETE USER",
 					"request": {
 						"method": "DELETE",
@@ -121,6 +167,186 @@
 							"path": [
 								"users",
 								"8bcfca56-4362-4a03-ba1b-3f8027477d9a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SONGS",
+			"item": [
+				{
+					"name": "GET SONGS",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/songs",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"songs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET SONG BY ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/songs/b8b95cc7-0c32-4f76-b9c7-72f4f95e3b18",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"songs",
+								"b8b95cc7-0c32-4f76-b9c7-72f4f95e3b18"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET SONG BY ARTIST",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/songs/artist?artist=barr",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"songs",
+								"artist"
+							],
+							"query": [
+								{
+									"key": "artist",
+									"value": "barr"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST SONG",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Projeto no deserto\",\r\n    \"artist\": \"Voz da Verdade\",\r\n    \"tone\": \"C\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/songs",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"songs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT SONG",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Projeto no Deserto\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/songs/b8b95cc7-0c32-4f76-b9c7-72f4f95e3b18",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"songs",
+								"b8b95cc7-0c32-4f76-b9c7-72f4f95e3b18"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE SONG",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/songs/b8b95cc7-0c32-4f76-b9c7-72f4f95e3b18",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"songs",
+								"b8b95cc7-0c32-4f76-b9c7-72f4f95e3b18"
 							]
 						}
 					},
@@ -166,7 +392,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Arine Daltro\",\r\n    \"email\": \"arine.daltro@gmail.com\",\r\n    \"password\": \"pdalto\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Tarcísio Daltro\",\r\n    \"email\": \"tarc.daltro@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -174,13 +400,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:5000/users",
+							"raw": "localhost:5000/auth/register",
 							"host": [
 								"localhost"
 							],
 							"port": "5000",
 							"path": [
-								"users"
+								"auth",
+								"register"
 							]
 						}
 					},

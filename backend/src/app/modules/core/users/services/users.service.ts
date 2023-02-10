@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 import fs from "fs";
 import path from "path";
-import uploadConfig from "../../../middlewares/upload";
-import LogService from "../../../shared/log/services/log.service";
-import { AppError } from "../../../shared/models/error.model";
+import uploadConfig from "../../../../middlewares/upload";
+import LogService from "../../../../shared/log/services/log.service";
+import { AppError } from "../../../../shared/models/error.model";
 import User from "../models/user.model";
 import UsersRepository from "../repositories/users.repository";
 

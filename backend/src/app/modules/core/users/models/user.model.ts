@@ -5,7 +5,7 @@ import {
   InferCreationAttributes,
   Model,
 } from "sequelize";
-import database from "../../../database/db";
+import database from "../../../../database/db";
 
 export default class User extends Model<
   InferAttributes<User>,

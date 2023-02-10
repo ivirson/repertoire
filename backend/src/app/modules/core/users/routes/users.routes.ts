@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
-import uploadConfig from "../../../middlewares/upload";
-import verifyToken from "../../../middlewares/verify-token";
+import uploadConfig from "../../../../middlewares/upload";
+import verifyToken from "../../../../middlewares/verify-token";
 import UsersController from "../controllers/users.controller";
 
 const usersRouter = Router();
